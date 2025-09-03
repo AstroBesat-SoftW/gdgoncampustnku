@@ -693,7 +693,7 @@
             border-radius: 15px;
             font-size: 14px;
             font-weight: bold;
-            min-width: 28px;
+            min-width: 32px;
             text-align: center;
             box-shadow: 
                 0 0 20px rgba(255, 107, 107, 0.6),
@@ -723,42 +723,247 @@
             }
         }
 
-        /* Responsive */
+        /* Responsive - Mobil Öncelikli */
         @media (max-width: 768px) {
-            .content-card {
-                padding: 40px 30px;
-                margin: 20px;
-            }
-            
-            .content-card h1 {
-                font-size: 2rem;
-            }
-            
-            .speech-bubble {
-                font-size: 14px;
-                padding: 10px 15px;
+            /* Uzay sahnesi mobil optimizasyonu */
+            .space-scene {
+                background: 
+                    radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.4) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 60%),
+                    radial-gradient(ellipse at 40% 40%, rgba(120, 219, 255, 0.15) 0%, transparent 60%),
+                    linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
             }
 
+            /* Gezegenler mobil boyutları */
+            .mars {
+                width: 80px;
+                height: 80px;
+                top: 10%;
+                right: 8%;
+            }
+
+            .jupiter {
+                width: 110px;
+                height: 110px;
+                top: 60%;
+                left: 5%;
+            }
+
+            .saturn {
+                width: 70px;
+                height: 70px;
+                top: 20%;
+                left: 20%;
+            }
+
+            .saturn::after {
+                width: 110px;
+                height: 110px;
+            }
+
+            /* Roket mobil optimizasyonu */
+            .rocket {
+                width: 60px;
+                height: 100px;
+                animation: rocketJourneyMobile 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+
+            .rocket-body {
+                width: 30px;
+                height: 60px;
+            }
+
+            .rocket-tip {
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+                border-bottom: 25px solid #e17055;
+            }
+
+            .rocket-flame {
+                width: 20px;
+                height: 35px;
+            }
+
+            @keyframes rocketJourneyMobile {
+                0% {
+                    left: -100px;
+                    top: 60%;
+                    transform: translateY(-50%) rotate(-30deg) scale(0.7);
+                }
+                40% {
+                    left: 35%;
+                    top: 40%;
+                    transform: translateY(-50%) rotate(20deg) scale(1.1);
+                }
+                80% {
+                    left: 50%;
+                    top: 45%;
+                    transform: translateY(-50%) rotate(-10deg) scale(1.05);
+                }
+                100% {
+                    left: 45%;
+                    top: 50%;
+                    transform: translateY(-50%) rotate(0deg) scale(1);
+                }
+            }
+
+            /* Dünya mobil boyutu */
+            .earth {
+                width: 200px;
+                height: 200px;
+            }
+
+            /* Astronot mobil pozisyonu */
+            .astronaut {
+                width: 40px;
+                height: 60px;
+                left: 40%;
+                top: 40%;
+            }
+
+            .astronaut-helmet {
+                width: 28px;
+                height: 28px;
+            }
+
+            .astronaut-body {
+                width: 25px;
+                height: 35px;
+            }
+
+            /* Konuşma balonu mobil */
+            .speech-bubble {
+                font-size: 14px;
+                padding: 12px 18px;
+                left: 55%;
+                top: 35%;
+                border-radius: 20px;
+                max-width: 150px;
+            }
+
+            /* Sayaç mobil güçlendirme */
+            .countdown-container {
+                bottom: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 10px 20px;
+                margin: 0 10px;
+                gap: 12px;
+                background: rgba(0,0,0,0.85);
+                backdrop-filter: blur(20px);
+                border: 2px solid rgba(116, 185, 255, 0.5);
+                border-radius: 30px;
+                box-shadow: 
+                    0 10px 30px rgba(0,0,0,0.4),
+                    0 0 25px rgba(116, 185, 255, 0.3),
+                    inset 0 1px 0 rgba(255,255,255,0.1);
+                min-height: 50px;
+                width: calc(100% - 20px);
+                max-width: 350px;
+            }
+
+            .countdown-text {
+                font-size: 13px;
+                font-weight: 600;
+                color: #ffffff;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                line-height: 1.3;
+                flex: 1;
+            }
+
+            .countdown-timer {
+                font-size: 16px;
+                padding: 8px 14px;
+                min-width: 36px;
+                border-radius: 18px;
+                background: linear-gradient(135deg, #ff6b6b, #ee5a24, #d63031);
+                box-shadow: 
+                    0 0 25px rgba(255, 107, 107, 0.8),
+                    0 4px 15px rgba(0,0,0,0.3),
+                    inset 0 1px 0 rgba(255,255,255,0.4);
+                animation: mobilePulse 0.7s ease-in-out infinite;
+            }
+
+            @keyframes mobilePulse {
+                0%, 100% { 
+                    transform: scale(1); 
+                    box-shadow: 0 0 25px rgba(255, 107, 107, 0.8), 0 4px 15px rgba(0,0,0,0.3);
+                }
+                50% { 
+                    transform: scale(1.2); 
+                    box-shadow: 0 0 35px rgba(255, 107, 107, 1), 0 6px 20px rgba(0,0,0,0.4), 0 0 60px rgba(255, 107, 107, 0.5);
+                }
+            }
+
+            .university-logo {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                box-shadow: 0 0 15px rgba(255,255,255,0.4);
+                background: white;
+                padding: 3px;
+                flex-shrink: 0;
+            }
+        }
+
+        /* Küçük mobil cihazlar için */
+        @media (max-width: 480px) {
             .countdown-container {
                 bottom: 10px;
-                padding: 6px 15px;
-                margin: 0 15px;
+                padding: 8px 15px;
+                margin: 0 8px;
+                gap: 10px;
+                min-height: 45px;
+            }
+
+            .countdown-text {
+                font-size: 11px;
+            }
+
+            .countdown-timer {
+                font-size: 14px;
+                padding: 6px 12px;
+                min-width: 32px;
+            }
+
+            .university-logo {
+                width: 28px;
+                height: 28px;
+            }
+
+            .speech-bubble {
+                font-size: 12px;
+                padding: 10px 15px;
+                max-width: 130px;
+            }
+        }
+
+        /* Çok küçük ekranlar için */
+        @media (max-width: 360px) {
+            .countdown-container {
+                flex-direction: column;
+                text-align: center;
                 gap: 8px;
+                padding: 10px 15px;
             }
 
             .countdown-text {
                 font-size: 10px;
+                order: 2;
             }
 
             .countdown-timer {
-                font-size: 12px;
-                padding: 3px 8px;
-                min-width: 24px;
+                order: 1;
+                font-size: 18px;
+                padding: 8px 16px;
+                min-width: 40px;
             }
 
             .university-logo {
-                width: 20px;
-                height: 20px;
+                order: 0;
+                width: 24px;
+                height: 24px;
+                margin-bottom: 5px;
             }
         }
     </style>
@@ -796,7 +1001,7 @@
         
         <!-- Konuşma balonu -->
         <div class="speech-bubble">
-            İşte aradığım şey! 🚀
+            İşte aradığım şey! Yeni bir üye... 🚀
         </div>
     </div>
 
@@ -810,7 +1015,7 @@
             Namık Kemal Üniversitesi Google Kulübü sitesine bağlanılıyor<br>
             <strong>Kalan süre:</strong>
         </div>
-        <div class="countdown-timer" id="countdownTimer">6</div>
+        <div class="countdown-timer" id="countdownTimer">10</div>
     </div>
 
     <script>
@@ -862,7 +1067,7 @@
         function startCountdown() {
             const countdownContainer = document.getElementById('countdownContainer');
             const countdownTimer = document.getElementById('countdownTimer');
-            let timeLeft = 6;
+            let timeLeft = 10;
             
             // Sayacı göster
             setTimeout(() => {
@@ -901,6 +1106,5 @@
             redirectToIndex2();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97916bad871b9862',t:'MTc1Njg2MjM4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979172e9268d28da',t:'MTc1Njg2MjY4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
