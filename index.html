@@ -3,1058 +3,903 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NKÜ Google Kulübü</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Uzay Yolculuğu</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
         * {
-            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .space-bg {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b69 50%, #0f0f23 100%);
-            position: relative;
+
+        body {
+            font-family: 'Arial', sans-serif;
             overflow: hidden;
+            background: #000;
         }
-        
+
+        /* Uzay sahne konteyneri */
+        .space-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: 1000;
+            transition: opacity 3s ease-in-out, filter 3s ease-in-out;
+            perspective: 1000px;
+        }
+
+        .space-scene.fade-out {
+            opacity: 0;
+            filter: blur(15px);
+            pointer-events: none;
+        }
+
+        /* Yıldızlar */
         .stars {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
-                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
-                radial-gradient(2px 2px at 160px 30px, #fff, transparent);
-            background-repeat: repeat;
-            background-size: 200px 100px;
-            animation: sparkle 20s linear infinite;
         }
-        
-        @keyframes sparkle {
-            from { transform: translateX(0); }
-            to { transform: translateX(200px); }
-        }
-        
-        .shooting-star {
+
+        .star {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
             border-radius: 50%;
-            animation: shoot 3s linear infinite;
+            animation: twinkle 3s infinite ease-in-out;
         }
-        
-        .shooting-star:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50px;
-            height: 1px;
-            background: linear-gradient(90deg, white, transparent);
-            transform: translateX(-50px);
+
+        .star.small {
+            background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.8) 40%, transparent 70%);
+            box-shadow: 0 0 6px #ffffff;
         }
-        
-        @keyframes shoot {
-            0% {
-                transform: translateX(-100px) translateY(-100px);
-                opacity: 0;
+
+        .star.medium {
+            background: radial-gradient(circle, #87ceeb 0%, rgba(135,206,235,0.6) 50%, transparent 70%);
+            box-shadow: 0 0 10px #87ceeb;
+        }
+
+        .star.large {
+            background: radial-gradient(circle, #ffd700 0%, rgba(255,215,0,0.8) 30%, transparent 60%);
+            box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255,215,0,0.3);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { 
+                opacity: 0.3; 
+                transform: scale(1);
             }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(100vw) translateY(100vh);
-                opacity: 0;
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2);
             }
         }
-        
-        .shooting-star:nth-child(1) {
-            top: 10%;
-            animation-delay: 0s;
-        }
-        
-        .shooting-star:nth-child(2) {
-            top: 30%;
-            animation-delay: 2s;
-        }
-        
-        .shooting-star:nth-child(3) {
-            top: 50%;
-            animation-delay: 4s;
-        }
-        
+
+        /* Gezegenler */
         .planet {
             position: absolute;
             border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+        }
+
+        .mars {
+            width: 100px;
+            height: 100px;
+            background: 
+                radial-gradient(ellipse at 25% 25%, #ff8a65 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 75%, #d84315 0%, transparent 40%),
+                radial-gradient(circle at 40% 60%, #ff5722 0%, #bf360c 100%);
+            top: 15%;
+            right: 12%;
+            animation-delay: -2s;
+            box-shadow: 
+                inset -10px -10px 20px rgba(0,0,0,0.3),
+                0 0 30px rgba(255,87,34,0.3);
+        }
+
+        .mars::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: #bf360c;
+            border-radius: 50%;
+            top: 30%;
+            left: 40%;
             opacity: 0.7;
         }
-        
-        .planet-1 {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle at 30% 30%, #ff6b6b, #ee5a24);
-            top: 20%;
-            right: 10%;
-            animation: float 8s ease-in-out infinite;
-        }
-        
-        .planet-2 {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle at 30% 30%, #4834d4, #686de0);
-            top: 60%;
-            left: 5%;
-            animation: float 10s ease-in-out infinite reverse;
-        }
-        
-        .google-logo {
-            width: 120px;
-            height: auto;
-            filter: drop-shadow(0 4px 8px rgba(255,255,255,0.3));
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .google-colors {
-            background: linear-gradient(45deg, #4285f4, #ea4335, #fbbc05, #34a853);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .float-animation:nth-child(2) {
-            animation-delay: -2s;
-        }
-        
-        .float-animation:nth-child(3) {
+
+        .jupiter {
+            width: 140px;
+            height: 140px;
+            background: 
+                linear-gradient(45deg, 
+                    #ffb74d 0%, #ff8a65 15%, #ffb74d 30%, 
+                    #ff8a65 45%, #ffb74d 60%, #ff8a65 75%, #ffb74d 100%);
+            top: 55%;
+            left: 8%;
             animation-delay: -4s;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .slide-in {
-            animation: slideIn 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .team-card {
-            transition: all 0.3s ease;
-            transform: translateY(0);
-        }
-        
-        .team-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .social-btn {
-            transition: all 0.3s ease;
-        }
-        
-        .social-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(66, 133, 244, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
-        }
-        
-        .typing-animation {
-            overflow: hidden;
-            border-right: 3px solid #4285f4;
-            white-space: nowrap;
-            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
-        
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: #4285f4; }
+            box-shadow: 
+                inset -15px -15px 30px rgba(0,0,0,0.2),
+                0 0 40px rgba(255,183,77,0.4);
         }
 
-       
-
-
-
-
-
-
-
-
-
-        .typing-indicator {
-            display: none;
-            padding: 12px 16px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 18px;
-            max-width: 80%;
-            margin-bottom: 15px;
-        }
-
-        .typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .typing-dots span {
-            width: 8px;
-            height: 8px;
-            background: #999;
-            border-radius: 50%;
-            animation: typing-bounce 1.4s infinite ease-in-out;
-        }
-
-        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typing-bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        .glow-text {
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-        }
-
-
-
-
-
-
-
-
-
-         /* Chatbot Styles */
-        .chatbot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .chatbot-button {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4285f4, #34a853);
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chatbot-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(66, 133, 244, 0.4);
-        }
-
-        .chatbot-button img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-
-        .notification-dot {
+        .jupiter::before {
+            content: '';
             position: absolute;
-            top: 5px;
-            right: 5px;
             width: 20px;
             height: 20px;
-            background: #ea4335;
+            background: radial-gradient(circle, #d84315, #bf360c);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-            animation: bounce 1s infinite;
+            top: 25%;
+            right: 30%;
+            box-shadow: 0 0 10px rgba(216,67,21,0.5);
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+        .saturn {
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle at 30% 30%, #fff3e0, #ffcc02, #ff8f00);
+            top: 25%;
+            left: 25%;
+            animation-delay: -6s;
+            box-shadow: 
+                inset -8px -8px 15px rgba(0,0,0,0.2),
+                0 0 25px rgba(255,204,2,0.3);
         }
 
-        .chat-window {
+        .saturn::after {
+            content: '';
             position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 320px;
-            max-height: 400px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            transform: scale(0) translateY(20px);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            overflow: hidden;
-        }
-
-        .chat-window.active {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
-
-        .chat-header {
-            background: linear-gradient(135deg, #4285f4, #34a853);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-header img {
-            width: 35px;
-            height: 35px;
+            width: 140px;
+            height: 140px;
+            border: 3px solid rgba(255,204,2,0.6);
             border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            box-shadow: 0 0 15px rgba(255,204,2,0.3);
         }
 
-        .chat-body {
-            padding: 20px;
-            max-height: 300px;
-            overflow-y: auto;
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1); 
+            }
+            33% { 
+                transform: translateY(-15px) rotate(120deg) scale(1.05); 
+            }
+            66% { 
+                transform: translateY(-8px) rotate(240deg) scale(0.95); 
+            }
         }
 
-        .message {
-            background: #f8f9fa;
-            padding: 12px 16px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            line-height: 1.4;
+        /* Roket */
+        .rocket {
+            position: absolute;
+            width: 70px;
+            height: 120px;
+            left: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: rocketJourney 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            z-index: 1001;
+            filter: drop-shadow(0 0 15px rgba(116, 185, 255, 0.5));
         }
 
-        .chat-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .option-btn {
-            background: linear-gradient(135deg, #4285f4, #34a853);
-            color: white;
-            border: none;
-            padding: 12px 16px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            text-align: left;
-        }
-
-        .option-btn:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-        }
-
-        .typing-indicator {
-            color: #4285f4;
-            font-weight: bold;
-            animation: typing-dots 1.5s infinite;
-        }
-
-        @keyframes typing-dots {
-            0%, 20% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        .message {
+        .rocket-body {
+            width: 35px;
+            height: 70px;
+            background: 
+                linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #2d3436 100%);
+            border-radius: 18px 18px 8px 8px;
             position: relative;
+            margin: 0 auto;
+            box-shadow: 
+                inset -5px -5px 10px rgba(0,0,0,0.3),
+                inset 5px 5px 10px rgba(255,255,255,0.1);
         }
 
-        .message::after {
-            content: '|';
-            color: #4285f4;
-            animation: blink 1s infinite;
-            margin-left: 2px;
+        .rocket-body::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 8px #ff6b6b;
+            animation: blink 2s infinite;
         }
 
-        .message.typing-complete::after {
-            display: none;
+        .rocket-body::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 3px;
+            background: linear-gradient(90deg, #ddd, #74b9ff, #ddd);
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .rocket-tip {
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 30px solid #e17055;
+            margin: 0 auto;
+            filter: drop-shadow(0 0 5px rgba(225, 112, 85, 0.5));
+        }
+
+        .rocket-wings {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 20px;
+        }
+
+        .rocket-wings::before,
+        .rocket-wings::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background: linear-gradient(45deg, #636e72, #2d3436);
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 0 80%);
+        }
+
+        .rocket-wings::before {
+            left: -10px;
+            top: -10px;
+        }
+
+        .rocket-wings::after {
+            right: -10px;
+            top: -10px;
+            transform: scaleX(-1);
+        }
+
+        .rocket-flame {
+            width: 25px;
+            height: 40px;
+            background: 
+                radial-gradient(ellipse at center top, #ff6b6b 0%, #fd79a8 30%, #fdcb6e 60%, #e84393 100%);
+            border-radius: 0 0 50% 50%;
+            margin: 0 auto;
+            animation: flame 0.15s infinite alternate;
+            filter: blur(1px);
+            box-shadow: 
+                0 0 20px #ff6b6b,
+                0 0 40px rgba(255, 107, 107, 0.5);
+        }
+
+        .rocket-flame::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background: 
+                radial-gradient(ellipse at center top, #ffffff 0%, #ff6b6b 50%, transparent 100%);
+            border-radius: 0 0 50% 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: innerFlame 0.1s infinite alternate;
         }
 
         @keyframes blink {
             0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+            51%, 100% { opacity: 0.3; }
         }
 
-        /* Mobile Responsive Improvements */
+        @keyframes flame {
+            0% { 
+                transform: scaleY(1) scaleX(1);
+                filter: blur(1px);
+            }
+            100% { 
+                transform: scaleY(1.4) scaleX(1.1);
+                filter: blur(2px);
+            }
+        }
+
+        @keyframes innerFlame {
+            0% { transform: translateX(-50%) scaleY(1); }
+            100% { transform: translateX(-50%) scaleY(1.2); }
+        }
+
+        @keyframes rocketJourney {
+            0% {
+                left: -120px;
+                top: 50%;
+                transform: translateY(-50%) rotate(-25deg) scale(0.6);
+                filter: drop-shadow(0 0 15px rgba(116, 185, 255, 0.5));
+            }
+            30% {
+                left: 30%;
+                top: 35%;
+                transform: translateY(-50%) rotate(15deg) scale(1.2);
+                filter: drop-shadow(0 0 25px rgba(116, 185, 255, 0.8));
+            }
+            70% {
+                left: 50%;
+                top: 40%;
+                transform: translateY(-50%) rotate(-5deg) scale(1.1);
+                filter: drop-shadow(0 0 30px rgba(116, 185, 255, 0.9));
+            }
+            100% {
+                left: 45%;
+                top: 45%;
+                transform: translateY(-50%) rotate(0deg) scale(1);
+                filter: drop-shadow(0 0 20px rgba(116, 185, 255, 0.7));
+            }
+        }
+
+        /* Dünya */
+        .earth {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at 35% 35%, #4fc3f7 0%, #29b6f6 30%, #0277bd 70%, #01579b 100%);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: earthAppear 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 2.5s;
+            box-shadow: 
+                inset -20px -20px 40px rgba(0,0,0,0.3),
+                0 0 50px rgba(79, 195, 247, 0.4),
+                0 0 100px rgba(79, 195, 247, 0.2);
+            overflow: hidden;
+        }
+
+        .earth::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse 40px 60px at 25% 30%, #2e7d32 0%, transparent 50%),
+                radial-gradient(ellipse 60px 40px at 75% 25%, #388e3c 0%, transparent 50%),
+                radial-gradient(ellipse 50px 70px at 60% 70%, #43a047 0%, transparent 50%),
+                radial-gradient(ellipse 35px 45px at 15% 60%, #4caf50 0%, transparent 50%),
+                radial-gradient(ellipse 45px 35px at 80% 75%, #66bb6a 0%, transparent 50%),
+                radial-gradient(ellipse 30px 50px at 40% 15%, #2e7d32 0%, transparent 50%);
+            animation: earthRotate 30s linear infinite;
+        }
+
+        .earth::after {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            top: -10%;
+            left: -10%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 30%),
+                linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            animation: atmosphereShimmer 8s ease-in-out infinite;
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse 30px 15px at 30% 40%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                radial-gradient(ellipse 25px 12px at 70% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(ellipse 35px 18px at 50% 65%, rgba(255,255,255,0.35) 0%, transparent 50%),
+                radial-gradient(ellipse 20px 10px at 80% 60%, rgba(255,255,255,0.4) 0%, transparent 50%);
+            animation: cloudDrift 40s linear infinite;
+        }
+
+        @keyframes earthAppear {
+            0% { 
+                transform: translate(-50%, -50%) scale(0) rotate(0deg); 
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(0.7) rotate(180deg);
+                opacity: 0.7;
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1) rotate(360deg); 
+                opacity: 1;
+            }
+        }
+
+        @keyframes earthRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes atmosphereShimmer {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
+        }
+
+        @keyframes cloudDrift {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Astronot */
+        .astronaut {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            left: 42%;
+            top: 35%;
+            opacity: 0;
+            animation: astronautAppear 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            animation-delay: 4s;
+            z-index: 1002;
+        }
+
+        .astronaut-helmet {
+            width: 35px;
+            height: 35px;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(200,200,255,0.7) 50%, rgba(150,150,200,0.8) 100%);
+            border-radius: 50%;
+            margin: 0 auto 3px;
+            border: 3px solid #c0c0c0;
+            position: relative;
+            box-shadow: 
+                inset -5px -5px 10px rgba(0,0,0,0.2),
+                0 0 15px rgba(255,255,255,0.3);
+        }
+
+        .astronaut-helmet::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            top: 45%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+        }
+
+        .astronaut-helmet::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            border-radius: 50%;
+            top: 25%;
+            left: 20%;
+            transform: rotate(-20deg);
+        }
+
+        .astronaut-body {
+            width: 30px;
+            height: 40px;
+            background: 
+                linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 50%, #d0d0d0 100%);
+            border-radius: 15px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 
+                inset -3px -3px 6px rgba(0,0,0,0.2),
+                inset 3px 3px 6px rgba(255,255,255,0.8);
+        }
+
+        .astronaut-body::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 8px;
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            border-radius: 4px;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 5px rgba(79, 195, 247, 0.5);
+        }
+
+        .astronaut-body::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            top: 20px;
+            right: 4px;
+            box-shadow: 0 0 3px #ff6b6b;
+            animation: blink 2s infinite;
+        }
+
+        .astronaut-arms {
+            position: absolute;
+            width: 45px;
+            height: 20px;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .astronaut-arms::before,
+        .astronaut-arms::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 18px;
+            background: linear-gradient(135deg, #f0f0f0, #d0d0d0);
+            border-radius: 4px;
+            top: 0;
+        }
+
+        .astronaut-arms::before {
+            left: 0;
+            transform: rotate(-20deg);
+        }
+
+        .astronaut-arms::after {
+            right: 0;
+            transform: rotate(20deg);
+        }
+
+        @keyframes astronautAppear {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-80px) translateY(20px) scale(0.3) rotate(-45deg); 
+            }
+            60% {
+                opacity: 0.8;
+                transform: translateX(-10px) translateY(-5px) scale(1.1) rotate(5deg);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg); 
+            }
+        }
+
+        /* Konuşma balonu */
+        .speech-bubble {
+            position: absolute;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #2d3436;
+            padding: 18px 25px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            left: 58%;
+            top: 30%;
+            opacity: 0;
+            animation: speechAppear 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            animation-delay: 5s;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.15),
+                0 4px 10px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            border: 2px solid rgba(116, 185, 255, 0.3);
+            z-index: 1003;
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 12px solid #ffffff;
+            filter: drop-shadow(-2px 0 2px rgba(0,0,0,0.1));
+        }
+
+        .speech-bubble::after {
+            content: '✨';
+            position: absolute;
+            right: -15px;
+            top: -10px;
+            font-size: 20px;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes speechAppear {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.3) rotate(-10deg) translateY(20px); 
+            }
+            60% {
+                opacity: 0.9;
+                transform: scale(1.1) rotate(2deg) translateY(-5px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1) rotate(0deg) translateY(0); 
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg); 
+                opacity: 0.7; 
+            }
+            50% { 
+                transform: scale(1.3) rotate(180deg); 
+                opacity: 1; 
+            }
+        }
+
+        /* Sayaç */
+        .countdown-container {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(116, 185, 255, 0.4);
+            border-radius: 25px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.3),
+                0 0 20px rgba(116, 185, 255, 0.2);
+            z-index: 1004;
+            animation: countdownAppear 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .countdown-container.show {
+            opacity: 1;
+        }
+
+        .university-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+            background: white;
+            padding: 2px;
+        }
+
+        .countdown-text {
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .countdown-timer {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 28px;
+            text-align: center;
+            box-shadow: 
+                0 0 20px rgba(255, 107, 107, 0.6),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            animation: intensePulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes countdownAppear {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(20px) scale(0.8); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0) scale(1); 
+            }
+        }
+
+        @keyframes intensePulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+            }
+            50% { 
+                transform: scale(1.15); 
+                box-shadow: 0 0 30px rgba(255, 107, 107, 0.9), 0 0 50px rgba(255, 107, 107, 0.4);
+            }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .typing-animation {
-                font-size: 2rem !important;
-                line-height: 1.2;
-                border-right: 2px solid #4285f4;
-                animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
+            .content-card {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+            
+            .content-card h1 {
+                font-size: 2rem;
+            }
+            
+            .speech-bubble {
+                font-size: 14px;
+                padding: 10px 15px;
             }
 
-            .gradient-bg h1 {
-                font-size: 2.5rem !important;
-                margin-bottom: 1rem;
+            .countdown-container {
+                bottom: 10px;
+                padding: 6px 15px;
+                margin: 0 15px;
+                gap: 8px;
             }
 
-            .gradient-bg p {
-                font-size: 1.1rem !important;
-                margin-bottom: 2rem;
-            }
-
-            .social-btn {
-                padding: 12px !important;
-                font-size: 1.2rem !important;
-            }
-
-            .float-animation {
-                display: none;
-            }
-
-            .team-card {
-                margin-bottom: 1rem;
-            }
-
-            .team-card h3 {
-                font-size: 1.1rem;
-            }
-
-            .team-card p {
-                font-size: 0.9rem;
-            }
-
-            .chatbot-container {
-                bottom: 15px;
-                right: 15px;
-            }
-
-            .chatbot-button {
-                width: 60px;
-                height: 60px;
-            }
-
-            .chatbot-button img {
-                width: 40px;
-                height: 40px;
-            }
-
-            .chat-window {
-                width: 280px;
-                bottom: 70px;
-                right: -10px;
-            }
-
-            .notification-dot {
-                width: 16px;
-                height: 16px;
+            .countdown-text {
                 font-size: 10px;
             }
-        }
 
-        @media (max-width: 480px) {
-            .gradient-bg {
-                padding: 2rem 1rem;
+            .countdown-timer {
+                font-size: 12px;
+                padding: 3px 8px;
+                min-width: 24px;
             }
 
-            .typing-animation {
-                font-size: 1.8rem !important;
-            }
-
-            .gradient-bg h1 {
-                font-size: 2rem !important;
-            }
-
-            .gradient-bg p {
-                font-size: 1rem !important;
-            }
-
-            .social-btn {
-                padding: 10px !important;
-                font-size: 1rem !important;
-            }
-
-            .grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 1rem !important;
-            }
-
-            .team-card {
-                padding: 1rem !important;
-            }
-
-            .team-card .w-24 {
-                width: 4rem !important;
-                height: 4rem !important;
-            }
-
-            .team-card h3 {
-                font-size: 1rem;
-            }
-
-            .team-card p {
-                font-size: 0.8rem;
-            }
-
-            .chat-window {
-                width: calc(100vw - 30px);
-                right: -5px;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .typing-animation {
-                font-size: 1.5rem !important;
-            }
-
-            .gradient-bg h1 {
-                font-size: 1.8rem !important;
-            }
-
-            .social-btn {
-                padding: 8px !important;
-                font-size: 0.9rem !important;
+            .university-logo {
+                width: 20px;
+                height: 20px;
             }
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Navigation 
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <svg class="w-8 h-8 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg/768px-Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg.png" style="width: 5%; padding: 5px;">
-                            </svg>
-                        <span class="font-bold text-xl text-gray-800">NKÜ Google Kulübü</span>
-                    </div>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">Ana Sayfa</a>
-                    
-                    <a href="#team" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">Ekip</a>
-                    
-                </div>
-                <div class="md:hidden flex items-center">
-                    <button class="mobile-menu-button text-gray-700 hover:text-blue-600 focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="mobile-menu hidden md:hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-                <a href="#home" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Ana Sayfa</a>
-             
-                <a href="#team" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Ekip</a>
-                
-            </div>
-        </div>
-    </nav>
--->
-   
-    <!-- Hero Section with Space Theme -->
-    <section id="home" class="space-bg min-h-screen flex items-center justify-center relative">
-        <!-- Animated Stars Background -->
-        <div class="stars"></div>
+<body>
+    <!-- Uzay sahnesi -->
+    <div class="space-scene" id="spaceScene">
+        <!-- Yıldızlar -->
+        <div class="stars" id="stars"></div>
         
-        <!-- Shooting Stars -->
-        <div class="shooting-star"></div>
-        <div class="shooting-star"></div>
-        <div class="shooting-star"></div>
+        <!-- Gezegenler -->
+        <div class="planet mars"></div>
+        <div class="planet jupiter"></div>
+        <div class="planet saturn"></div>
         
-        <!-- Floating Planets -->
-        <div class="planet planet-1"></div>
-        <div class="planet planet-2"></div>
-        
-        <div class="text-center z-10 relative px-4">
-            <div class="slide-in">
-                <!-- Google Logo -->
-                <div class="mb-8 flex justify-center">
-                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google Logo" style="width:150px; height:auto;">
-
-                </div>
-                
-                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 glow-text">
-                    NKÜ <span class="google-colors">Google</span> Kulübü
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-                    Teknolojinin geleceğini şekillendiren, yenilikçi projelerde yer alan ve Google ekosistemini keşfeden bir topluluk
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <button onclick="scrollToSection('team')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition duration-300 transform hover:scale-105 pulse-animation">
-                        Ekibimizi Keşfet
-                    </button>
-                   
-
-                </div>
-
-                 <br>
-
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="https://www.instagram.com/gdgoncampustnku/" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fab fa-instagram text-2xl"></i>
-                </a>
-                <a href="https://chat.whatsapp.com/DaswiFe008S8cQSEFFCZfi" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fab fa-whatsapp text-2xl"></i>
-                </a>
-                <a href="https://gdg.community.dev/gdg-on-campus-tekirdag-namik-kemal-university-tekirdag-turkiye/" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fas fa-globe text-2xl"></i>
-                </a>
-                <a href="mailto:info@nkugoogleclub.com" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fas fa-envelope text-2xl"></i>
-                </a>
-            </div>
-            </div>
+        <!-- Roket -->
+        <div class="rocket">
+            <div class="rocket-tip"></div>
+            <div class="rocket-body"></div>
+            <div class="rocket-wings"></div>
+            <div class="rocket-flame"></div>
         </div>
-    </section>
-
-
-
-    <!-- Team Section -->
-  <!-- Team Section -->
-    <div id="team" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 google-colors">Ekibimiz</h2>
-            <p class="text-xl text-gray-600 text-center mb-16">Tutkulu ve yetenekli ekip üyelerimiz</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
-                <!-- Team Member 1 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/dilek_cansu_iejJW2Q.jpeg">
-                        
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Dilek Cansu</h3>
-                    <p class="text-blue-600 font-medium">Kulüp Başkanı</p>
-                </div>
-                
-                <!-- Team Member 2 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center">
-                         <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/besat_%C3%A7%C4%B1ngar_uux8ZGy.jpg">
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Besat Çıngar</h3>
-                    <p class="text-green-600 font-medium">Proje Takımı</p>
-                </div>
-                
-                <!-- Team Member 3 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center">
-                         <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/esma_%C3%B6zadan%C4%B1r.jpeg">
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Esma Özadanır</h3>
-                    <p class="text-purple-600 font-medium">Proje Takımı</p>
-                </div>
-                
-                <!-- Team Member 4 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center">
-                         <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/alperen_sara%C3%A7.jpg">
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Alperen Saraç</h3>
-                    <p class="text-red-600 font-medium">Tasarım Ekibi</p>
-                </div>
-                
-                <!-- Team Member 5 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center">
-                         <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/aynur_din%C3%A7er_5muHLeL.jpeg">
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Aynur DİNÇER</h3>
-                    <p class="text-yellow-600 font-medium">Tasarım Ekibi</p>
-                </div>
-                
-                <!-- Team Member 6 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-indigo-400 to-indigo-600 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/g%C3%B6k%C3%A7e_sar%C4%B1%C3%A7am.jpg">
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Gökçe Sarıçam</h3>
-                    <p class="text-indigo-600 font-medium">İletişim Ekibi</p>
-                </div>
-                
-                <!-- Team Member 7 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-pink-400 to-pink-600 flex items-center justify-center">
-                        <i class="fas fa-user text-white text-3xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Batuhan Akkoyun</h3>
-                    <p class="text-pink-600 font-medium">Organizasyon ekibi</p>
-                </div>
-                
-                <!-- Team Member 8 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-teal-400 to-teal-600 flex items-center justify-center">
-                        <i class="fas fa-user text-white text-3xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">İKBAL YILDIZ</h3>
-                    <p class="text-teal-600 font-medium">Organizasyon ekibi</p>
-                </div>
-                
-                <!-- Team Member 9 -->
-                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
-                        <i class="fas fa-user text-white text-3xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Açelya Yırtar</h3>
-                    <p class="text-orange-600 font-medium">B. Yardımcısı</p>
-                </div>
-                
-                <!-- Team Member 10 -->
-              
-            </div>
+        
+        <!-- Dünya -->
+        <div class="earth">
+            <div class="clouds"></div>
+        </div>
+        
+        <!-- Astronot -->
+        <div class="astronaut">
+            <div class="astronaut-helmet"></div>
+            <div class="astronaut-body"></div>
+            <div class="astronaut-arms"></div>
+        </div>
+        
+        <!-- Konuşma balonu -->
+        <div class="speech-bubble">
+            İşte aradığım şey! 🚀
         </div>
     </div>
 
-    <!-- Contact Section -->
-  
-       <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="mb-6">
-                <i class="fab fa-google text-4xl google-colors mb-4"></i>
-                <h3 class="text-2xl font-bold mb-2">NKÜ Google Kulübü</h3>
-                <p class="text-gray-400">Geleceği birlikte inşa ediyoruz</p>
-            </div>
-            
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="https://www.instagram.com/gdgoncampustnku/" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fab fa-instagram text-2xl"></i>
-                </a>
-                <a href="https://chat.whatsapp.com/DaswiFe008S8cQSEFFCZfi" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fab fa-whatsapp text-2xl"></i>
-                </a>
-                <a href="https://gdg.community.dev/gdg-on-campus-tekirdag-namik-kemal-university-tekirdag-turkiye/" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fas fa-globe text-2xl"></i>
-                </a>
-                <a href="mailto:info@nkugoogleclub.com" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fas fa-envelope text-2xl"></i>
-                </a>
-            </div>
-            
-            <p class="text-gray-500">&copy; 2024 NKÜ Google Kulübü. Geliştirici Besat Ç. Tüm hakları saklıdır.</p>
+    <!-- Sayaç -->
+    <div class="countdown-container" id="countdownContainer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg/768px-Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg.png" 
+             alt="NKÜ Logo" 
+             class="university-logo"
+             onerror="this.style.display='none';">
+        <div class="countdown-text">
+            Namık Kemal Üniversitesi Google Kulübü sitesine bağlanılıyor<br>
+            <strong>Kalan süre:</strong>
         </div>
-    </footer>
-    <!-- Chatbot -->
-      <div class="chatbot-container">
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <img src="https://media.tenor.com/HO5d5Ep5ylYAAAAi/mr-urbina-creative.gif" alt="Robot">
-                <div>
-                    <div class="font-semibold">Google Asistan</div>
-                    <div class="text-xs opacity-75">Çevrimiçi</div>
-                </div>
-            </div>
-            <div class="chat-body" id="chatBody">
-                <div class="message">
-                    🎉 Google Kulübüne hoş geldiniz! Nasıl yardımcı olabilirim?
-                </div>
-                <div class="chat-options" id="chatOptions">
-                    <button class="option-btn" onclick="handleOption('instagram')">
-                        📸 Instagram hesabımızı görmek istiyorum
-                    </button>
-                    <button class="option-btn" onclick="handleOption('whatsapp')">
-                        💬 WhatsApp grubuna katılmak istiyorum
-                    </button>
-                    <button class="option-btn" onclick="handleOption('why-join')">
-                        🤔 Neden bu kulübe üye olmalıyım?
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <button class="chatbot-button" id="chatbotBtn" onclick="toggleChat()">
-            <img src="https://media.tenor.com/HO5d5Ep5ylYAAAAi/mr-urbina-creative.gif" alt="Robot Assistant">
-            <div class="notification-dot" id="notificationDot">1</div>
-        </button>
+        <div class="countdown-timer" id="countdownTimer">6</div>
     </div>
-  <script>
-        let chatOpen = false;
-        let notificationShown = false;
 
-        function scrollToTeam() {
-            document.getElementById('team').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        // Chatbot functionality
-        function toggleChat() {
-            const chatWindow = document.getElementById('chatWindow');
-            const notificationDot = document.getElementById('notificationDot');
+    <script>
+        // Yıldızları oluştur
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
             
-            chatOpen = !chatOpen;
-            
-            if (chatOpen) {
-                chatWindow.classList.add('active');
-                notificationDot.style.display = 'none';
-            } else {
-                chatWindow.classList.remove('active');
-            }
-        }
-
-        function typeWriter(element, text, speed = 50) {
-            return new Promise((resolve) => {
-                let i = 0;
-                element.innerHTML = '';
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
                 
-                // Add typing indicator
-                const typingIndicator = document.createElement('span');
-                typingIndicator.className = 'typing-indicator';
-                typingIndicator.innerHTML = '●●●';
-                element.appendChild(typingIndicator);
+                // Yıldız türünü belirle
+                const rand = Math.random();
+                if (rand < 0.7) {
+                    star.classList.add('small');
+                    star.style.width = Math.random() * 2 + 1 + 'px';
+                } else if (rand < 0.9) {
+                    star.classList.add('medium');
+                    star.style.width = Math.random() * 3 + 2 + 'px';
+                } else {
+                    star.classList.add('large');
+                    star.style.width = Math.random() * 4 + 3 + 'px';
+                }
                 
-                setTimeout(() => {
-                    typingIndicator.remove();
-                    element.classList.remove('typing-complete');
-                    
-                    function type() {
-                        if (i < text.length) {
-                            element.innerHTML += text.charAt(i);
-                            i++;
-                            // Scroll to bottom during typing
-                            const chatBody = document.getElementById('chatBody');
-                            chatBody.scrollTop = chatBody.scrollHeight;
-                            setTimeout(type, speed);
-                        } else {
-                            // Remove cursor after typing is complete
-                            element.classList.add('typing-complete');
-                            resolve();
-                        }
-                    }
-                    type();
-                }, 1000);
-            });
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
         }
 
-        async function handleOption(option) {
-            const chatBody = document.getElementById('chatBody');
-            const chatOptions = document.getElementById('chatOptions');
+        // Animasyon tamamlandığında index2.html'e yönlendir
+        function redirectToIndex2() {
+            const spaceScene = document.getElementById('spaceScene');
             
-            // Hide options
-            chatOptions.style.display = 'none';
+            // Uzay sahnesini blur ile gizle
+            spaceScene.classList.add('fade-out');
             
-            let responseMessage = '';
-            let shouldOpenLink = false;
-            let linkUrl = '';
-            
-            switch(option) {
-                case 'instagram':
-                    responseMessage = '📸 Harika! Instagram hesabımızı ziyaret etmek için aşağıdaki linke tıklayabilirsiniz. Orada en son projelerimizi ve etkinliklerimizi paylaşıyoruz!';
-                    shouldOpenLink = true;
-                    linkUrl = 'https://www.instagram.com/gdgoncampustnku/';
-                    break;
-                    
-                case 'whatsapp':
-                    responseMessage = '💬 Mükemmel! WhatsApp grubumuzda aktif bir topluluk var. Hemen katılmak için aşağıdaki linke tıklayın!';
-                    shouldOpenLink = true;
-                    linkUrl = 'https://chat.whatsapp.com/DaswiFe008S8cQSEFFCZfi';
-                    break;
-                    
-                case 'why-join':
-                    responseMessage = `🚀 NKÜ Google Kulübüne katılmanız için birçok harika neden var:
-
-✨ En son teknolojileri öğrenme fırsatı
-🤝 Sektör profesyonelleriyle networking
-💡 Gerçek projeler üzerinde çalışma deneyimi
-🏆 Google sertifikaları kazanma şansı
-🎯 Kariyer gelişimi için mentorluk
-🌟 Yaratıcı fikirlerinizi hayata geçirme imkanı
-
-Hemen aramıza katılın ve teknoloji dünyasında fark yaratın! 🎉`;
-                    break;
-            }
-            
-            // Add response message with typing animation
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message';
-            chatBody.appendChild(messageDiv);
-            
-            // Scroll to bottom
-            chatBody.scrollTop = chatBody.scrollHeight;
-            
-            // Type the message
-            await typeWriter(messageDiv, responseMessage, 30);
-            
-            // Open link if needed
-            if (shouldOpenLink) {
-                setTimeout(() => {
-                    window.open(linkUrl, '_blank');
-                }, 1000);
-            }
-            
-            // Show options again after message is complete
+            // 2 saniye sonra yönlendir
             setTimeout(() => {
-                const newOptionsDiv = document.createElement('div');
-                newOptionsDiv.className = 'chat-options';
-                newOptionsDiv.innerHTML = `
-                    <button class="option-btn" onclick="handleOption('instagram')">
-                        📸 Instagram hesabımızı görmek istiyorum
-                    </button>
-                    <button class="option-btn" onclick="handleOption('whatsapp')">
-                        💬 WhatsApp grubuna katılmak istiyorum
-                    </button>
-                    <button class="option-btn" onclick="handleOption('why-join')">
-                        🤔 Neden bu kulübe üye olmalıyım?
-                    </button>
-                `;
-                chatBody.appendChild(newOptionsDiv);
-                chatBody.scrollTop = chatBody.scrollHeight;
+                window.location.href = 'index2.html';
             }, 2000);
         }
 
-        // Show notification after 2 seconds
-        setTimeout(() => {
-            if (!notificationShown && !chatOpen) {
-                const notificationDot = document.getElementById('notificationDot');
-                notificationDot.style.display = 'flex';
-                notificationShown = true;
-            }
-        }, 2000);
-
-        // Animate team cards on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }, index * 100);
+        // Sayaç fonksiyonu
+        function startCountdown() {
+            const countdownContainer = document.getElementById('countdownContainer');
+            const countdownTimer = document.getElementById('countdownTimer');
+            let timeLeft = 6;
+            
+            // Sayacı göster
+            setTimeout(() => {
+                countdownContainer.classList.add('show');
+            }, 500);
+            
+            // Her saniye güncelle
+            const countdownInterval = setInterval(() => {
+                timeLeft--;
+                countdownTimer.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    redirectToIndex2();
                 }
-            });
-        }, observerOptions);
+            }, 1000);
+            
+            return countdownInterval;
+        }
 
-        // Observe team cards
-        document.addEventListener('DOMContentLoaded', () => {
-            const teamCards = document.querySelectorAll('.team-card');
-            teamCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(50px)';
-                card.style.transition = 'all 0.6s ease';
-                observer.observe(card);
-            });
+        let countdownInterval;
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('load', () => {
+            createStars();
+            
+            // Sayacı başlat
+            countdownInterval = startCountdown();
         });
 
-        // Add click effects to social buttons
-        document.querySelectorAll('.social-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // Create ripple effect
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.classList.add('ripple');
-                
-                this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            });
+        // Eğer kullanıcı beklemek istemezse tıklayarak geçebilir
+        document.addEventListener('click', () => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            redirectToIndex2();
         });
     </script>
-
-    <style>
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none;
-        }
-
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    </style>
-    
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979120f756b428da',t:'MTc1Njg1OTMyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97916bad871b9862',t:'MTc1Njg2MjM4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
-
-<script type="text/javascript">
-
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
-            document.querySelector('.mobile-menu').classList.toggle('hidden');
-        });
-
-        // Smooth scrolling
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        // Add scroll event listener for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-</script>
