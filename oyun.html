@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zamanlama Ustası - Google Kulübü</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .timer-glow {
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .winner-animation {
+            animation: bounce 0.6s ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            80% { transform: translateY(-10px); }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f39c12;
+            animation: confetti-fall 3s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center relative overflow-hidden">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">⏱️ Zamanlama Ustası</h1>
+            <p class="text-gray-600 text-sm">Namık Kemal Üniversitesi Google Kulübü</p>
+        </div>
+        
+        <!-- Prize Info -->
+        <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl p-4 mb-8 text-white">
+            <h2 class="text-xl font-bold mb-2">🎯 HEDEF</h2>
+            <p class="text-lg">Sayacı tam <span class="font-bold text-2xl">10.00</span> saniyede durdur!</p>
+            <p class="text-2xl font-bold mt-2">🏆 ÖDÜL: 100 TL</p>
+        </div>
+        
+        <!-- Timer Display -->
+        <div class="timer-glow bg-gray-900 rounded-2xl p-8 mb-8">
+            <div id="timer" class="text-6xl font-bold text-white mb-4">0.00</div>
+            <div id="status" class="text-lg text-gray-300">Başlamak için butona bas!</div>
+        </div>
+        
+        <!-- Control Button -->
+        <button id="controlBtn" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 pulse-animation mb-6">
+            🚀 BAŞLA
+        </button>
+        
+        <!-- Score Display -->
+        <div id="scoreSection" class="hidden">
+            <div class="bg-gray-100 rounded-2xl p-4 mb-4">
+                <h3 class="text-lg font-bold text-gray-800 mb-2">📊 Son Sonuç</h3>
+                <div id="lastScore" class="text-2xl font-bold text-blue-600"></div>
+                <div id="difference" class="text-sm text-gray-600 mt-1"></div>
+            </div>
+        </div>
+        
+        <!-- Best Score -->
+        <div id="bestScoreSection" class="hidden bg-green-100 rounded-2xl p-4">
+            <h3 class="text-lg font-bold text-green-800 mb-2">🏅 En İyi Skor</h3>
+            <div id="bestScore" class="text-xl font-bold text-green-600"></div>
+        </div>
+        
+        <!-- Confetti Container -->
+        <div id="confettiContainer" class="absolute inset-0 pointer-events-none"></div>
+    </div>
+
+    <script>
+        let startTime = null;
+        let timerInterval = null;
+        let isRunning = false;
+        let bestScore = localStorage.getItem('bestScore') || null;
+        
+        const timerDisplay = document.getElementById('timer');
+        const statusDisplay = document.getElementById('status');
+        const controlBtn = document.getElementById('controlBtn');
+        const scoreSection = document.getElementById('scoreSection');
+        const lastScoreDisplay = document.getElementById('lastScore');
+        const differenceDisplay = document.getElementById('difference');
+        const bestScoreSection = document.getElementById('bestScoreSection');
+        const bestScoreDisplay = document.getElementById('bestScore');
+        const confettiContainer = document.getElementById('confettiContainer');
+        
+        // Show best score if exists
+        if (bestScore) {
+            bestScoreSection.classList.remove('hidden');
+            bestScoreDisplay.textContent = bestScore + ' saniye';
+        }
+        
+        function updateTimer() {
+            const currentTime = Date.now();
+            const elapsed = (currentTime - startTime) / 1000;
+            timerDisplay.textContent = elapsed.toFixed(2);
+        }
+        
+        function startTimer() {
+            startTime = Date.now();
+            isRunning = true;
+            controlBtn.textContent = '⏹️ DURDUR';
+            controlBtn.classList.remove('pulse-animation');
+            statusDisplay.textContent = 'Sayaç çalışıyor... 10.00\'da dur!';
+            statusDisplay.classList.add('text-blue-500');
+            
+            timerInterval = setInterval(updateTimer, 10);
+        }
+        
+        function stopTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            const finalTime = parseFloat(timerDisplay.textContent);
+            
+            controlBtn.textContent = '🔄 YENİDEN BAŞLA';
+            controlBtn.classList.add('pulse-animation');
+            
+            showResult(finalTime);
+        }
+        
+        function showResult(time) {
+            const target = 10.00;
+            const difference = Math.abs(time - target);
+            
+            scoreSection.classList.remove('hidden');
+            lastScoreDisplay.textContent = time.toFixed(2) + ' saniye';
+            
+            if (difference === 0) {
+                // Perfect score!
+                statusDisplay.textContent = '🎉 MÜKEMMEL! TAM 10.00 SANİYE!';
+                statusDisplay.className = 'text-lg text-green-500 font-bold winner-animation';
+                differenceDisplay.textContent = 'Fark: 0.00 saniye - KAZANDIN! 🏆';
+                differenceDisplay.className = 'text-sm text-green-600 font-bold';
+                createConfetti();
+            } else if (difference <= 0.05) {
+                statusDisplay.textContent = '🔥 SÜPER! Çok yaklaştın!';
+                statusDisplay.className = 'text-lg text-green-500 font-bold';
+                differenceDisplay.textContent = `Fark: ${difference.toFixed(2)} saniye - Harika!`;
+                differenceDisplay.className = 'text-sm text-green-600';
+            } else if (difference <= 0.1) {
+                statusDisplay.textContent = '👍 İyi! Biraz daha pratik yap!';
+                statusDisplay.className = 'text-lg text-yellow-500';
+                differenceDisplay.textContent = `Fark: ${difference.toFixed(2)} saniye`;
+                differenceDisplay.className = 'text-sm text-yellow-600';
+            } else {
+                statusDisplay.textContent = '💪 Tekrar dene! Daha iyisini yapabilirsin!';
+                statusDisplay.className = 'text-lg text-red-500';
+                differenceDisplay.textContent = `Fark: ${difference.toFixed(2)} saniye`;
+                differenceDisplay.className = 'text-sm text-red-600';
+            }
+            
+            // Update best score
+            if (!bestScore || difference < Math.abs(parseFloat(bestScore) - target)) {
+                bestScore = time.toFixed(2);
+                localStorage.setItem('bestScore', bestScore);
+                bestScoreSection.classList.remove('hidden');
+                bestScoreDisplay.textContent = bestScore + ' saniye';
+                
+                if (difference <= 0.05) {
+                    bestScoreDisplay.parentElement.classList.add('winner-animation');
+                }
+            }
+        }
+        
+        function createConfetti() {
+            const colors = ['#f39c12', '#e74c3c', '#9b59b6', '#3498db', '#2ecc71'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confettiContainer.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 50);
+            }
+        }
+        
+        function resetGame() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timerDisplay.textContent = '0.00';
+            controlBtn.textContent = '🚀 BAŞLA';
+            controlBtn.classList.add('pulse-animation');
+            statusDisplay.textContent = 'Başlamak için butona bas!';
+            statusDisplay.className = 'text-lg text-gray-300';
+        }
+        
+        controlBtn.addEventListener('click', () => {
+            if (!isRunning && timerDisplay.textContent === '0.00') {
+                startTimer();
+            } else if (isRunning) {
+                stopTimer();
+            } else {
+                resetGame();
+            }
+        });
+        
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                controlBtn.click();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b1da4e62a7a626',t:'MTc1NzIwMjQ2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
