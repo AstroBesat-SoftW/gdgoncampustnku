@@ -884,7 +884,7 @@
             
             switch(option) {
                 case 'instagram':
-                    responseMessage = '📸 Harika! Instagram hesabımızı ziyaret etmek için aşağıdaki linke tıklayabilirsiniz. Orada en son projelerimizi ve etkinliklerimizi paylaşıyoruz! <a href="https://www.instagram.com/gdgoncampustnku/" target="_blank">Instagram Sayfamız</a>';
+                    responseMessage = '📸 Harika! Instagram hesabımızı ziyaret etmek için aşağıdaki linke tıklayabilirsiniz. Orada en son projelerimizi ve etkinliklerimizi paylaşıyoruz!';
                     shouldOpenLink = true;
                     linkUrl = 'https://www.instagram.com/gdgoncampustnku/';
                     break;
@@ -919,6 +919,29 @@ Hemen aramıza katılın ve teknoloji dünyasında fark yaratın! 🎉`;
             
             // Type the message
             await typeWriter(messageDiv, responseMessage, 30);
+
+
+           // deneme 
+
+             // Normal mesajı yaz
+
+
+// Eğer link varsa ekle
+if (shouldOpenLink && linkUrl) {
+    const link = document.createElement('a');
+    link.href = linkUrl;
+    link.target = "_blank";
+    link.textContent = "👉 Sayfamız";
+    link.style.color = "#007bff"; // mavi renk
+    link.style.textDecoration = "underline";
+    messageDiv.appendChild(document.createElement("br"));
+    messageDiv.appendChild(link);
+}
+
+
+
+            // deneme
+            
             
             // Open link if needed
             if (shouldOpenLink) {
