@@ -1,1 +1,1084 @@
 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NKÜ Google Kulübü</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .space-bg {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b69 50%, #0f0f23 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 20s linear infinite;
+        }
+        
+        @keyframes sparkle {
+            from { transform: translateX(0); }
+            to { transform: translateX(200px); }
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: shoot 3s linear infinite;
+        }
+        
+        .shooting-star:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, white, transparent);
+            transform: translateX(-50px);
+        }
+        
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        .shooting-star:nth-child(1) {
+            top: 10%;
+            animation-delay: 0s;
+        }
+        
+        .shooting-star:nth-child(2) {
+            top: 30%;
+            animation-delay: 2s;
+        }
+        
+        .shooting-star:nth-child(3) {
+            top: 50%;
+            animation-delay: 4s;
+        }
+        
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        
+        .planet-1 {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #ee5a24);
+            top: 20%;
+            right: 10%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .planet-2 {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #4834d4, #686de0);
+            top: 60%;
+            left: 5%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+        
+        .google-logo {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(255,255,255,0.3));
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .google-colors {
+            background: linear-gradient(45deg, #4285f4, #ea4335, #fbbc05, #34a853);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .float-animation:nth-child(2) {
+            animation-delay: -2s;
+        }
+        
+        .float-animation:nth-child(3) {
+            animation-delay: -4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .team-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .social-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(66, 133, 244, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: 3px solid #4285f4;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #4285f4; }
+        }
+
+       
+
+
+
+
+
+
+
+
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 18px;
+            max-width: 80%;
+            margin-bottom: 15px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing-bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing-bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+
+
+
+
+
+
+
+
+         /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(66, 133, 244, 0.4);
+        }
+
+        .chatbot-button img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: #ea4335;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 320px;
+            max-height: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            transform: scale(0) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+
+        .chat-window.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-header img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+        }
+
+        .chat-body {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .chat-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-btn {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+        }
+
+        .typing-indicator {
+            color: #4285f4;
+            font-weight: bold;
+            animation: typing-dots 1.5s infinite;
+        }
+
+        @keyframes typing-dots {
+            0%, 20% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .message {
+            position: relative;
+        }
+
+        .message::after {
+            content: '|';
+            color: #4285f4;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        .message.typing-complete::after {
+            display: none;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Mobile Responsive Improvements */
+        @media (max-width: 768px) {
+            .typing-animation {
+                font-size: 2rem !important;
+                line-height: 1.2;
+                border-right: 2px solid #4285f4;
+                animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
+            }
+
+            .gradient-bg h1 {
+                font-size: 2.5rem !important;
+                margin-bottom: 1rem;
+            }
+
+            .gradient-bg p {
+                font-size: 1.1rem !important;
+                margin-bottom: 2rem;
+            }
+
+            .social-btn {
+                padding: 12px !important;
+                font-size: 1.2rem !important;
+            }
+
+            .float-animation {
+                display: none;
+            }
+
+            .team-card {
+                margin-bottom: 1rem;
+            }
+
+            .team-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .team-card p {
+                font-size: 0.9rem;
+            }
+
+            .chatbot-container {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .chatbot-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .chatbot-button img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .chat-window {
+                width: 280px;
+                bottom: 70px;
+                right: -10px;
+            }
+
+            .notification-dot {
+                width: 16px;
+                height: 16px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gradient-bg {
+                padding: 2rem 1rem;
+            }
+
+            .typing-animation {
+                font-size: 1.8rem !important;
+            }
+
+            .gradient-bg h1 {
+                font-size: 2rem !important;
+            }
+
+            .gradient-bg p {
+                font-size: 1rem !important;
+            }
+
+            .social-btn {
+                padding: 10px !important;
+                font-size: 1rem !important;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 1rem !important;
+            }
+
+            .team-card {
+                padding: 1rem !important;
+            }
+
+            .team-card .w-24 {
+                width: 4rem !important;
+                height: 4rem !important;
+            }
+
+            .team-card h3 {
+                font-size: 1rem;
+            }
+
+            .team-card p {
+                font-size: 0.8rem;
+            }
+
+            .chat-window {
+                width: calc(100vw - 30px);
+                right: -5px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .typing-animation {
+                font-size: 1.5rem !important;
+            }
+
+            .gradient-bg h1 {
+                font-size: 1.8rem !important;
+            }
+
+            .social-btn {
+                padding: 8px !important;
+                font-size: 0.9rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation 
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <svg class="w-8 h-8 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg/768px-Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg.png" style="width: 5%; padding: 5px;">
+                            </svg>
+                        <span class="font-bold text-xl text-gray-800">NKÜ Google Kulübü</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">Ana Sayfa</a>
+                    
+                    <a href="#team" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">Ekip</a>
+                    
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button text-gray-700 hover:text-blue-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
+                <a href="#home" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Ana Sayfa</a>
+             
+                <a href="#team" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Ekip</a>
+                
+            </div>
+        </div>
+    </nav>
+-->
+   
+    <!-- Hero Section with Space Theme -->
+    <section id="home" class="space-bg min-h-screen flex items-center justify-center relative">
+        <!-- Animated Stars Background -->
+        <div class="stars"></div>
+        
+        <!-- Shooting Stars -->
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        
+        <!-- Floating Planets -->
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        
+        <div class="text-center z-10 relative px-4">
+            <div class="slide-in">
+                <!-- Google Logo -->
+                <div class="mb-8 flex justify-center">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google Logo" style="width:150px; height:auto;">
+
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 glow-text">
+                    NKÜ <span class="google-colors">Google</span> Kulübü
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+                    Teknolojinin geleceğini şekillendiren, yenilikçi projelerde yer alan ve Google ekosistemini keşfeden bir topluluk
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button onclick="scrollToSection('team')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition duration-300 transform hover:scale-105 pulse-animation">
+                        Ekibimizi Keşfet
+                    </button>
+                   
+
+                </div>
+
+                 <br>
+
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="https://www.instagram.com/gdgoncampustnku/" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+                <a href="https://chat.whatsapp.com/GzERpPifqdBKdytt7kJTYb?mode=ems_wa_c" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-whatsapp text-2xl"></i>
+                </a>
+                <a href="https://gdg.community.dev/gdg-on-campus-tekirdag-namik-kemal-university-tekirdag-turkiye/" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-globe text-2xl"></i>
+                </a>
+                <a href="mailto:info@nkugoogleclub.com" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </a>
+            </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Team Section -->
+  <!-- Team Section -->
+    <div id="team" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 google-colors">Ekibimiz</h2>
+            <p class="text-xl text-gray-600 text-center mb-16">Tutkulu ve yetenekli ekip üyelerimiz</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+                <!-- Team Member 1 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/dilek_cansu_iejJW2Q.jpeg">
+                        
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Dilek Cansu</h3>
+                    <p class="text-blue-600 font-medium">Kulüp Başkanı</p>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center">
+                         <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/besat_%C3%A7%C4%B1ngar_uux8ZGy.jpg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Besat Çıngar</h3>
+                    <p class="text-green-600 font-medium">Proje Takımı</p>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center">
+                         <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/esma_%C3%B6zadan%C4%B1r.jpeg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Esma Özadanır</h3>
+                    <p class="text-purple-600 font-medium">Proje Takımı</p>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center">
+                         <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/alperen_sara%C3%A7.jpg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Alperen Saraç</h3>
+                    <p class="text-red-600 font-medium">Tasarım Ekibi</p>
+                </div>
+                
+                <!-- Team Member 5 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center">
+                         <img src="WhatsApp Görsel 2025-09-07 saat 01.41.11_86ad2987.jpg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Aynur DİNÇER</h3>
+                    <p class="text-yellow-600 font-medium">Tasarım Ekibi</p>
+                </div>
+                
+                <!-- Team Member 6 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-indigo-400 to-indigo-600 flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/g%C3%B6k%C3%A7e_sar%C4%B1%C3%A7am.jpg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Gökçe Sarıçam</h3>
+                    <p class="text-indigo-600 font-medium">İletişim Ekibi</p>
+                </div>
+                
+                <!-- Team Member 7 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-pink-400 to-pink-600 flex items-center justify-center">
+                        <i class="fas fa-user text-white text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Batuhan Akkoyun</h3>
+                    <p class="text-pink-600 font-medium">Organizasyon ekibi</p>
+                </div>
+                
+                <!-- Team Member 8 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-teal-400 to-teal-600 flex items-center justify-center">
+                        <i class="fas fa-user text-white text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">İKBAL YILDIZ</h3>
+                    <p class="text-teal-600 font-medium">Organizasyon ekibi</p>
+                </div>
+                
+                <!-- Team Member 9 -->
+                <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
+                        <i class="fas fa-user text-white text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Açelya Yırtar</h3>
+                    <p class="text-orange-600 font-medium">B. Yardımcısı</p>
+                </div>
+                
+                <!-- Team Member 10 -->
+              
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+  
+       <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-6">
+                <i class="fab fa-google text-4xl google-colors mb-4"></i>
+                <h3 class="text-2xl font-bold mb-2">NKÜ Google Kulübü</h3>
+                <p class="text-gray-400">Geleceği birlikte inşa ediyoruz</p>
+            </div>
+            
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="https://www.instagram.com/gdgoncampustnku/" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+                <a href="https://chat.whatsapp.com/GzERpPifqdBKdytt7kJTYb?mode=ems_wa_c" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-whatsapp text-2xl"></i>
+                </a>
+                <a href="https://gdg.community.dev/gdg-on-campus-tekirdag-namik-kemal-university-tekirdag-turkiye/" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-globe text-2xl"></i>
+                </a>
+                <a href="mailto:info@nkugoogleclub.com" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </a>
+            </div>
+            
+            <p class="text-gray-500">&copy; 2025 NKÜ Google Kulübü. Geliştirici Besat Ç. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+    <!-- Chatbot -->
+      <div class="chatbot-container">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <img src="https://media.tenor.com/HO5d5Ep5ylYAAAAi/mr-urbina-creative.gif" alt="Robot">
+                <div>
+                    <div class="font-semibold">Google Asistan</div>
+                    <div class="text-xs opacity-75">Çevrimiçi</div>
+                </div>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="message">
+                    🎉 Google Kulübüne hoş geldiniz! Nasıl yardımcı olabilirim?
+                </div>
+                <div class="chat-options" id="chatOptions">
+                    <button class="option-btn" onclick="handleOption('instagram')">
+                        📸 Instagram hesabımızı görmek istiyorum
+                    </button>
+                    <button class="option-btn" onclick="handleOption('whatsapp')">
+                        💬 WhatsApp grubuna katılmak istiyorum
+                    </button>
+                    <button class="option-btn" onclick="handleOption('why-join')">
+                        🤔 Neden bu kulübe üye olmalıyım?
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <button class="chatbot-button" id="chatbotBtn" onclick="toggleChat()">
+            <img src="https://media.tenor.com/HO5d5Ep5ylYAAAAi/mr-urbina-creative.gif" alt="Robot Assistant">
+            <div class="notification-dot" id="notificationDot">1</div>
+        </button>
+    </div>
+  <script>
+        let chatOpen = false;
+        let notificationShown = false;
+
+        function scrollToTeam() {
+            document.getElementById('team').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Chatbot functionality
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            const notificationDot = document.getElementById('notificationDot');
+            
+            chatOpen = !chatOpen;
+            
+            if (chatOpen) {
+                chatWindow.classList.add('active');
+                notificationDot.style.display = 'none';
+            } else {
+                chatWindow.classList.remove('active');
+            }
+        }
+
+        function typeWriter(element, text, speed = 50) {
+            return new Promise((resolve) => {
+                let i = 0;
+                element.innerHTML = '';
+                
+                // Add typing indicator
+                const typingIndicator = document.createElement('span');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.innerHTML = '●●●';
+                element.appendChild(typingIndicator);
+                
+                setTimeout(() => {
+                    typingIndicator.remove();
+                    element.classList.remove('typing-complete');
+                    
+                    function type() {
+                        if (i < text.length) {
+                            element.innerHTML += text.charAt(i);
+                            i++;
+                            // Scroll to bottom during typing
+                            const chatBody = document.getElementById('chatBody');
+                            chatBody.scrollTop = chatBody.scrollHeight;
+                            setTimeout(type, speed);
+                        } else {
+                            // Remove cursor after typing is complete
+                            element.classList.add('typing-complete');
+                            resolve();
+                        }
+                    }
+                    type();
+                }, 1000);
+            });
+        }
+
+        async function handleOption(option) {
+            const chatBody = document.getElementById('chatBody');
+            const chatOptions = document.getElementById('chatOptions');
+            
+            // Hide options
+            chatOptions.style.display = 'none';
+            
+            let responseMessage = '';
+            let shouldOpenLink = false;
+            let linkUrl = '';
+            
+            switch(option) {
+                case 'instagram':
+                    responseMessage = '📸 Harika! Instagram hesabımızı ziyaret etmek için aşağıdaki linke tıklayabilirsiniz. Orada en son projelerimizi ve etkinliklerimizi paylaşıyoruz!';
+                    shouldOpenLink = true;
+                    linkUrl = 'https://www.instagram.com/gdgoncampustnku/';
+                    break;
+                    
+                case 'whatsapp':
+                    responseMessage = '💬 Mükemmel! WhatsApp grubumuzda aktif bir topluluk var. Hemen katılmak için aşağıdaki linke tıklayın!';
+                    shouldOpenLink = true;
+                    linkUrl = 'https://chat.whatsapp.com/GzERpPifqdBKdytt7kJTYb?mode=ems_wa_c';
+                    break;
+                    
+                case 'why-join':
+                    responseMessage = `🚀 NKÜ Google Kulübüne katılmanız için birçok harika neden var:
+
+✨ En son teknolojileri öğrenme fırsatı
+🤝 Sektör profesyonelleriyle networking
+💡 Gerçek projeler üzerinde çalışma deneyimi
+🏆 Google sertifikaları kazanma şansı
+🎯 Kariyer gelişimi için mentorluk
+🌟 Yaratıcı fikirlerinizi hayata geçirme imkanı
+
+Hemen aramıza katılın ve teknoloji dünyasında fark yaratın! 🎉`;
+                    break;
+            }
+            
+            // Add response message with typing animation
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            chatBody.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            // Type the message
+            await typeWriter(messageDiv, responseMessage, 30);
+
+
+           // deneme 
+
+             // Normal mesajı yaz
+
+
+// Eğer link varsa ekle
+if (shouldOpenLink && linkUrl) {
+    const link = document.createElement('a');
+    link.href = linkUrl;
+    link.target = "_blank";
+    link.textContent = "👉 Sayfamız";
+    link.style.color = "#007bff"; // mavi renk
+    link.style.textDecoration = "underline";
+    messageDiv.appendChild(document.createElement("br"));
+    messageDiv.appendChild(link);
+}
+
+
+
+            // deneme
+            
+            
+            // Open link if needed
+            if (shouldOpenLink) {
+                setTimeout(() => {
+                    window.open(linkUrl, '_blank');
+                }, 1000);
+            }
+            
+            // Show options again after message is complete
+            setTimeout(() => {
+                const newOptionsDiv = document.createElement('div');
+                newOptionsDiv.className = 'chat-options';
+                newOptionsDiv.innerHTML = `
+                    <button class="option-btn" onclick="handleOption('instagram')">
+                        📸 Instagram hesabımızı görmek istiyorum
+                    </button>
+                    <button class="option-btn" onclick="handleOption('whatsapp')">
+                        💬 WhatsApp grubuna katılmak istiyorum
+                    </button>
+                    <button class="option-btn" onclick="handleOption('why-join')">
+                        🤔 Neden bu kulübe üye olmalıyım?
+                    </button>
+                `;
+                chatBody.appendChild(newOptionsDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 2000);
+        }
+
+        // Show notification after 2 seconds
+        setTimeout(() => {
+            if (!notificationShown && !chatOpen) {
+                const notificationDot = document.getElementById('notificationDot');
+                notificationDot.style.display = 'flex';
+                notificationShown = true;
+            }
+        }, 2000);
+
+        // Animate team cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        // Observe team cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const teamCards = document.querySelectorAll('.team-card');
+            teamCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+
+        // Add click effects to social buttons
+        document.querySelectorAll('.social-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+
+    <style>
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+    
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979120f756b428da',t:'MTc1Njg1OTMyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
+
+<script type="text/javascript">
+
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Add scroll event listener for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+</script>
