@@ -1,1 +1,1112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzay Yolculuğu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Uzay sahne konteyneri */
+        .space-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: 1000;
+            transition: opacity 3s ease-in-out, filter 3s ease-in-out;
+            perspective: 1000px;
+        }
+
+        .space-scene.fade-out {
+            opacity: 0;
+            filter: blur(15px);
+            pointer-events: none;
+        }
+
+        /* Yıldızlar */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        .star.small {
+            background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.8) 40%, transparent 70%);
+            box-shadow: 0 0 6px #ffffff;
+        }
+
+        .star.medium {
+            background: radial-gradient(circle, #87ceeb 0%, rgba(135,206,235,0.6) 50%, transparent 70%);
+            box-shadow: 0 0 10px #87ceeb;
+        }
+
+        .star.large {
+            background: radial-gradient(circle, #ffd700 0%, rgba(255,215,0,0.8) 30%, transparent 60%);
+            box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255,215,0,0.3);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { 
+                opacity: 0.3; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2);
+            }
+        }
+
+        /* Gezegenler */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+        }
+
+        .mars {
+            width: 100px;
+            height: 100px;
+            background: 
+                radial-gradient(ellipse at 25% 25%, #ff8a65 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 75%, #d84315 0%, transparent 40%),
+                radial-gradient(circle at 40% 60%, #ff5722 0%, #bf360c 100%);
+            top: 15%;
+            right: 12%;
+            animation-delay: -2s;
+            box-shadow: 
+                inset -10px -10px 20px rgba(0,0,0,0.3),
+                0 0 30px rgba(255,87,34,0.3);
+        }
+
+        .mars::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: #bf360c;
+            border-radius: 50%;
+            top: 30%;
+            left: 40%;
+            opacity: 0.7;
+        }
+
+        .jupiter {
+            width: 140px;
+            height: 140px;
+            background: 
+                linear-gradient(45deg, 
+                    #ffb74d 0%, #ff8a65 15%, #ffb74d 30%, 
+                    #ff8a65 45%, #ffb74d 60%, #ff8a65 75%, #ffb74d 100%);
+            top: 55%;
+            left: 8%;
+            animation-delay: -4s;
+            box-shadow: 
+                inset -15px -15px 30px rgba(0,0,0,0.2),
+                0 0 40px rgba(255,183,77,0.4);
+        }
+
+        .jupiter::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #d84315, #bf360c);
+            border-radius: 50%;
+            top: 25%;
+            right: 30%;
+            box-shadow: 0 0 10px rgba(216,67,21,0.5);
+        }
+
+        .saturn {
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle at 30% 30%, #fff3e0, #ffcc02, #ff8f00);
+            top: 25%;
+            left: 25%;
+            animation-delay: -6s;
+            box-shadow: 
+                inset -8px -8px 15px rgba(0,0,0,0.2),
+                0 0 25px rgba(255,204,2,0.3);
+        }
+
+        .saturn::after {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 3px solid rgba(255,204,2,0.6);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            box-shadow: 0 0 15px rgba(255,204,2,0.3);
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1); 
+            }
+            33% { 
+                transform: translateY(-15px) rotate(120deg) scale(1.05); 
+            }
+            66% { 
+                transform: translateY(-8px) rotate(240deg) scale(0.95); 
+            }
+        }
+
+        /* Roket */
+        .rocket {
+            position: absolute;
+            width: 70px;
+            height: 120px;
+            left: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: rocketJourney 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            z-index: 1001;
+            filter: drop-shadow(0 0 15px rgba(116, 185, 255, 0.5));
+        }
+
+        .rocket-body {
+            width: 35px;
+            height: 70px;
+            background: 
+                linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #2d3436 100%);
+            border-radius: 18px 18px 8px 8px;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 
+                inset -5px -5px 10px rgba(0,0,0,0.3),
+                inset 5px 5px 10px rgba(255,255,255,0.1);
+        }
+
+        .rocket-body::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 8px #ff6b6b;
+            animation: blink 2s infinite;
+        }
+
+        .rocket-body::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 3px;
+            background: linear-gradient(90deg, #ddd, #74b9ff, #ddd);
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .rocket-tip {
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 30px solid #e17055;
+            margin: 0 auto;
+            filter: drop-shadow(0 0 5px rgba(225, 112, 85, 0.5));
+        }
+
+        .rocket-wings {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 20px;
+        }
+
+        .rocket-wings::before,
+        .rocket-wings::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background: linear-gradient(45deg, #636e72, #2d3436);
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 0 80%);
+        }
+
+        .rocket-wings::before {
+            left: -10px;
+            top: -10px;
+        }
+
+        .rocket-wings::after {
+            right: -10px;
+            top: -10px;
+            transform: scaleX(-1);
+        }
+
+        .rocket-flame {
+            width: 25px;
+            height: 40px;
+            background: 
+                radial-gradient(ellipse at center top, #ff6b6b 0%, #fd79a8 30%, #fdcb6e 60%, #e84393 100%);
+            border-radius: 0 0 50% 50%;
+            margin: 0 auto;
+            animation: flame 0.15s infinite alternate;
+            filter: blur(1px);
+            box-shadow: 
+                0 0 20px #ff6b6b,
+                0 0 40px rgba(255, 107, 107, 0.5);
+        }
+
+        .rocket-flame::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background: 
+                radial-gradient(ellipse at center top, #ffffff 0%, #ff6b6b 50%, transparent 100%);
+            border-radius: 0 0 50% 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: innerFlame 0.1s infinite alternate;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        @keyframes flame {
+            0% { 
+                transform: scaleY(1) scaleX(1);
+                filter: blur(1px);
+            }
+            100% { 
+                transform: scaleY(1.4) scaleX(1.1);
+                filter: blur(2px);
+            }
+        }
+
+        @keyframes innerFlame {
+            0% { transform: translateX(-50%) scaleY(1); }
+            100% { transform: translateX(-50%) scaleY(1.2); }
+        }
+
+        @keyframes rocketJourney {
+            0% {
+                left: -120px;
+                top: 50%;
+                transform: translateY(-50%) rotate(-25deg) scale(0.6);
+                filter: drop-shadow(0 0 15px rgba(116, 185, 255, 0.5));
+            }
+            30% {
+                left: 30%;
+                top: 35%;
+                transform: translateY(-50%) rotate(15deg) scale(1.2);
+                filter: drop-shadow(0 0 25px rgba(116, 185, 255, 0.8));
+            }
+            70% {
+                left: 50%;
+                top: 40%;
+                transform: translateY(-50%) rotate(-5deg) scale(1.1);
+                filter: drop-shadow(0 0 30px rgba(116, 185, 255, 0.9));
+            }
+            100% {
+                left: 45%;
+                top: 45%;
+                transform: translateY(-50%) rotate(0deg) scale(1);
+                filter: drop-shadow(0 0 20px rgba(116, 185, 255, 0.7));
+            }
+        }
+
+        /* Dünya */
+        .earth {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at 35% 35%, #4fc3f7 0%, #29b6f6 30%, #0277bd 70%, #01579b 100%);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: earthAppear 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 2.5s;
+            box-shadow: 
+                inset -20px -20px 40px rgba(0,0,0,0.3),
+                0 0 50px rgba(79, 195, 247, 0.4),
+                0 0 100px rgba(79, 195, 247, 0.2);
+            overflow: hidden;
+        }
+
+        .earth::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse 40px 60px at 25% 30%, #2e7d32 0%, transparent 50%),
+                radial-gradient(ellipse 60px 40px at 75% 25%, #388e3c 0%, transparent 50%),
+                radial-gradient(ellipse 50px 70px at 60% 70%, #43a047 0%, transparent 50%),
+                radial-gradient(ellipse 35px 45px at 15% 60%, #4caf50 0%, transparent 50%),
+                radial-gradient(ellipse 45px 35px at 80% 75%, #66bb6a 0%, transparent 50%),
+                radial-gradient(ellipse 30px 50px at 40% 15%, #2e7d32 0%, transparent 50%);
+            animation: earthRotate 30s linear infinite;
+        }
+
+        .earth::after {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            top: -10%;
+            left: -10%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 30%),
+                linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            animation: atmosphereShimmer 8s ease-in-out infinite;
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse 30px 15px at 30% 40%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                radial-gradient(ellipse 25px 12px at 70% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(ellipse 35px 18px at 50% 65%, rgba(255,255,255,0.35) 0%, transparent 50%),
+                radial-gradient(ellipse 20px 10px at 80% 60%, rgba(255,255,255,0.4) 0%, transparent 50%);
+            animation: cloudDrift 40s linear infinite;
+        }
+
+        @keyframes earthAppear {
+            0% { 
+                transform: translate(-50%, -50%) scale(0) rotate(0deg); 
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(0.7) rotate(180deg);
+                opacity: 0.7;
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1) rotate(360deg); 
+                opacity: 1;
+            }
+        }
+
+        @keyframes earthRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes atmosphereShimmer {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
+        }
+
+        @keyframes cloudDrift {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Astronot */
+        .astronaut {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            left: 42%;
+            top: 35%;
+            opacity: 0;
+            animation: astronautAppear 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            animation-delay: 4s;
+            z-index: 1002;
+        }
+
+        .astronaut-helmet {
+            width: 35px;
+            height: 35px;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(200,200,255,0.7) 50%, rgba(150,150,200,0.8) 100%);
+            border-radius: 50%;
+            margin: 0 auto 3px;
+            border: 3px solid #c0c0c0;
+            position: relative;
+            box-shadow: 
+                inset -5px -5px 10px rgba(0,0,0,0.2),
+                0 0 15px rgba(255,255,255,0.3);
+        }
+
+        .astronaut-helmet::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            top: 45%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+        }
+
+        .astronaut-helmet::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            border-radius: 50%;
+            top: 25%;
+            left: 20%;
+            transform: rotate(-20deg);
+        }
+
+        .astronaut-body {
+            width: 30px;
+            height: 40px;
+            background: 
+                linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 50%, #d0d0d0 100%);
+            border-radius: 15px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 
+                inset -3px -3px 6px rgba(0,0,0,0.2),
+                inset 3px 3px 6px rgba(255,255,255,0.8);
+        }
+
+        .astronaut-body::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 8px;
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            border-radius: 4px;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 5px rgba(79, 195, 247, 0.5);
+        }
+
+        .astronaut-body::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            top: 20px;
+            right: 4px;
+            box-shadow: 0 0 3px #ff6b6b;
+            animation: blink 2s infinite;
+        }
+
+        .astronaut-arms {
+            position: absolute;
+            width: 45px;
+            height: 20px;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .astronaut-arms::before,
+        .astronaut-arms::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 18px;
+            background: linear-gradient(135deg, #f0f0f0, #d0d0d0);
+            border-radius: 4px;
+            top: 0;
+        }
+
+        .astronaut-arms::before {
+            left: 0;
+            transform: rotate(-20deg);
+        }
+
+        .astronaut-arms::after {
+            right: 0;
+            transform: rotate(20deg);
+        }
+
+        @keyframes astronautAppear {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-80px) translateY(20px) scale(0.3) rotate(-45deg); 
+            }
+            60% {
+                opacity: 0.8;
+                transform: translateX(-10px) translateY(-5px) scale(1.1) rotate(5deg);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg); 
+            }
+        }
+
+        /* Konuşma balonu */
+        .speech-bubble {
+            position: absolute;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #2d3436;
+            padding: 18px 25px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            left: 58%;
+            top: 30%;
+            opacity: 0;
+            animation: speechAppear 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            animation-delay: 5s;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.15),
+                0 4px 10px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            border: 2px solid rgba(116, 185, 255, 0.3);
+            z-index: 1003;
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 12px solid #ffffff;
+            filter: drop-shadow(-2px 0 2px rgba(0,0,0,0.1));
+        }
+
+        .speech-bubble::after {
+            content: '✨';
+            position: absolute;
+            right: -15px;
+            top: -10px;
+            font-size: 20px;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes speechAppear {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.3) rotate(-10deg) translateY(20px); 
+            }
+            60% {
+                opacity: 0.9;
+                transform: scale(1.1) rotate(2deg) translateY(-5px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1) rotate(0deg) translateY(0); 
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg); 
+                opacity: 0.7; 
+            }
+            50% { 
+                transform: scale(1.3) rotate(180deg); 
+                opacity: 1; 
+            }
+        }
+
+        /* Sayaç */
+        .countdown-container {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(116, 185, 255, 0.4);
+            border-radius: 25px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.3),
+                0 0 20px rgba(116, 185, 255, 0.2);
+            z-index: 1004;
+            animation: countdownAppear 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .countdown-container.show {
+            opacity: 1;
+        }
+
+        .university-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+            background: white;
+            padding: 2px;
+        }
+
+        .countdown-text {
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .countdown-timer {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 32px;
+            text-align: center;
+            box-shadow: 
+                0 0 20px rgba(255, 107, 107, 0.6),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            animation: intensePulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes countdownAppear {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(20px) scale(0.8); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0) scale(1); 
+            }
+        }
+
+        @keyframes intensePulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+            }
+            50% { 
+                transform: scale(1.15); 
+                box-shadow: 0 0 30px rgba(255, 107, 107, 0.9), 0 0 50px rgba(255, 107, 107, 0.4);
+            }
+        }
+
+        /* Responsive - Mobil Öncelikli */
+        @media (max-width: 768px) {
+            /* Uzay sahnesi mobil optimizasyonu */
+            .space-scene {
+                background: 
+                    radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.4) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 60%),
+                    radial-gradient(ellipse at 40% 40%, rgba(120, 219, 255, 0.15) 0%, transparent 60%),
+                    linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            }
+
+            /* Gezegenler mobil boyutları */
+            .mars {
+                width: 80px;
+                height: 80px;
+                top: 10%;
+                right: 8%;
+            }
+
+            .jupiter {
+                width: 110px;
+                height: 110px;
+                top: 60%;
+                left: 5%;
+            }
+
+            .saturn {
+                width: 70px;
+                height: 70px;
+                top: 20%;
+                left: 20%;
+            }
+
+            .saturn::after {
+                width: 110px;
+                height: 110px;
+            }
+
+            /* Roket mobil optimizasyonu */
+            .rocket {
+                width: 60px;
+                height: 100px;
+                animation: rocketJourneyMobile 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+
+            .rocket-body {
+                width: 30px;
+                height: 60px;
+            }
+
+            .rocket-tip {
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+                border-bottom: 25px solid #e17055;
+            }
+
+            .rocket-flame {
+                width: 20px;
+                height: 35px;
+            }
+
+            @keyframes rocketJourneyMobile {
+                0% {
+                    left: -100px;
+                    top: 60%;
+                    transform: translateY(-50%) rotate(-30deg) scale(0.7);
+                }
+                40% {
+                    left: 35%;
+                    top: 40%;
+                    transform: translateY(-50%) rotate(20deg) scale(1.1);
+                }
+                80% {
+                    left: 50%;
+                    top: 45%;
+                    transform: translateY(-50%) rotate(-10deg) scale(1.05);
+                }
+                100% {
+                    left: 45%;
+                    top: 50%;
+                    transform: translateY(-50%) rotate(0deg) scale(1);
+                }
+            }
+
+            /* Dünya mobil boyutu */
+            .earth {
+                width: 200px;
+                height: 200px;
+            }
+
+            /* Astronot mobil pozisyonu */
+            .astronaut {
+                width: 40px;
+                height: 60px;
+                left: 40%;
+                top: 40%;
+            }
+
+            .astronaut-helmet {
+                width: 28px;
+                height: 28px;
+            }
+
+            .astronaut-body {
+                width: 25px;
+                height: 35px;
+            }
+
+            /* Konuşma balonu mobil */
+            .speech-bubble {
+                font-size: 14px;
+                padding: 12px 18px;
+                left: 55%;
+                top: 35%;
+                border-radius: 20px;
+                max-width: 150px;
+            }
+
+            /* Sayaç mobil güçlendirme */
+            .countdown-container {
+                bottom: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 10px 20px;
+                margin: 0 10px;
+                gap: 12px;
+                background: rgba(0,0,0,0.85);
+                backdrop-filter: blur(20px);
+                border: 2px solid rgba(116, 185, 255, 0.5);
+                border-radius: 30px;
+                box-shadow: 
+                    0 10px 30px rgba(0,0,0,0.4),
+                    0 0 25px rgba(116, 185, 255, 0.3),
+                    inset 0 1px 0 rgba(255,255,255,0.1);
+                min-height: 50px;
+                width: calc(100% - 20px);
+                max-width: 350px;
+            }
+
+            .countdown-text {
+                font-size: 13px;
+                font-weight: 600;
+                color: #ffffff;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                line-height: 1.3;
+                flex: 1;
+            }
+
+            .countdown-timer {
+                font-size: 16px;
+                padding: 8px 14px;
+                min-width: 36px;
+                border-radius: 18px;
+                background: linear-gradient(135deg, #ff6b6b, #ee5a24, #d63031);
+                box-shadow: 
+                    0 0 25px rgba(255, 107, 107, 0.8),
+                    0 4px 15px rgba(0,0,0,0.3),
+                    inset 0 1px 0 rgba(255,255,255,0.4);
+                animation: mobilePulse 0.7s ease-in-out infinite;
+            }
+
+            @keyframes mobilePulse {
+                0%, 100% { 
+                    transform: scale(1); 
+                    box-shadow: 0 0 25px rgba(255, 107, 107, 0.8), 0 4px 15px rgba(0,0,0,0.3);
+                }
+                50% { 
+                    transform: scale(1.2); 
+                    box-shadow: 0 0 35px rgba(255, 107, 107, 1), 0 6px 20px rgba(0,0,0,0.4), 0 0 60px rgba(255, 107, 107, 0.5);
+                }
+            }
+
+            .university-logo {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                box-shadow: 0 0 15px rgba(255,255,255,0.4);
+                background: white;
+                padding: 3px;
+                flex-shrink: 0;
+            }
+        }
+
+        /* Küçük mobil cihazlar için */
+        @media (max-width: 480px) {
+            .countdown-container {
+                bottom: 10px;
+                padding: 8px 15px;
+                margin: 0 8px;
+                gap: 10px;
+                min-height: 45px;
+            }
+
+            .countdown-text {
+                font-size: 11px;
+            }
+
+            .countdown-timer {
+                font-size: 14px;
+                padding: 6px 12px;
+                min-width: 32px;
+            }
+
+            .university-logo {
+                width: 28px;
+                height: 28px;
+            }
+
+            .speech-bubble {
+                font-size: 12px;
+                padding: 10px 15px;
+                max-width: 130px;
+            }
+        }
+
+        /* Çok küçük ekranlar için */
+        @media (max-width: 360px) {
+            .countdown-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+                padding: 10px 15px;
+            }
+
+            .countdown-text {
+                font-size: 10px;
+                order: 2;
+            }
+
+            .countdown-timer {
+                order: 1;
+                font-size: 18px;
+                padding: 8px 16px;
+                min-width: 40px;
+            }
+
+            .university-logo {
+                order: 0;
+                width: 24px;
+                height: 24px;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Uzay sahnesi -->
+    <div class="space-scene" id="spaceScene">
+        <!-- Yıldızlar -->
+        <div class="stars" id="stars"></div>
+        
+        <!-- Gezegenler -->
+        <div class="planet mars"></div>
+        <div class="planet jupiter"></div>
+        <div class="planet saturn"></div>
+        
+        <!-- Roket -->
+        <div class="rocket">
+            <div class="rocket-tip"></div>
+            <div class="rocket-body"></div>
+            <div class="rocket-wings"></div>
+            <div class="rocket-flame"></div>
+        </div>
+        
+        <!-- Dünya -->
+        <div class="earth">
+            <div class="clouds"></div>
+        </div>
+        
+        <!-- Astronot -->
+        <div class="astronaut">
+            <div class="astronaut-helmet"></div>
+            <div class="astronaut-body"></div>
+            <div class="astronaut-arms"></div>
+        </div>
+        
+        <!-- Konuşma balonu -->
+        <div class="speech-bubble">
+            İşte aradığım şey! Yeni bir üye... 🚀
+        </div>
+    </div>
+
+    <!-- Sayaç -->
+    <div class="countdown-container" id="countdownContainer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg/768px-Tekirda%C4%9F_Nam%C4%B1k_Kemal_University_logo.svg.png" 
+             alt="NKÜ Logo" 
+             class="university-logo"
+             onerror="this.style.display='none';">
+        <div class="countdown-text">
+            Namık Kemal Üniversitesi Google Kulübü sitesine bağlanılıyor<br>
+            <strong>Kalan süre:</strong>
+        </div>
+        <div class="countdown-timer" id="countdownTimer">10</div>
+    </div>
+
+    <script>
+        // Yıldızları oluştur
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Yıldız türünü belirle
+                const rand = Math.random();
+                if (rand < 0.7) {
+                    star.classList.add('small');
+                    star.style.width = Math.random() * 2 + 1 + 'px';
+                } else if (rand < 0.9) {
+                    star.classList.add('medium');
+                    star.style.width = Math.random() * 3 + 2 + 'px';
+                } else {
+                    star.classList.add('large');
+                    star.style.width = Math.random() * 4 + 3 + 'px';
+                }
+                
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Animasyon tamamlandığında index2.html'e yönlendir
+        function redirectToIndex2() {
+            const spaceScene = document.getElementById('spaceScene');
+            
+            // Uzay sahnesini blur ile gizle
+            spaceScene.classList.add('fade-out');
+            
+            // 2 saniye sonra yönlendir
+            setTimeout(() => {
+                window.location.href = 'anasayfa.html';
+            }, 2000);
+        }
+
+        // Sayaç fonksiyonu
+        function startCountdown() {
+            const countdownContainer = document.getElementById('countdownContainer');
+            const countdownTimer = document.getElementById('countdownTimer');
+            let timeLeft = 10;
+            
+            // Sayacı göster
+            setTimeout(() => {
+                countdownContainer.classList.add('show');
+            }, 500);
+            
+            // Her saniye güncelle
+            const countdownInterval = setInterval(() => {
+                timeLeft--;
+                countdownTimer.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    redirectToIndex2();
+                }
+            }, 1000);
+            
+            return countdownInterval;
+        }
+
+        let countdownInterval;
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('load', () => {
+            createStars();
+            
+            // Sayacı başlat
+            countdownInterval = startCountdown();
+        });
+
+        // Eğer kullanıcı beklemek istemezse tıklayarak geçebilir
+        document.addEventListener('click', () => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            redirectToIndex2();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979172e9268d28da',t:'MTc1Njg2MjY4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
 
