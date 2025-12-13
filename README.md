@@ -15,3 +15,7 @@ https://astrobesat-softw.github.io/gdgoncampustnku/
 
 
 <img width="1891" height="870" alt="image" src="https://github.com/user-attachments/assets/2c449084-efe5-48c2-8f80-d16a0f242e93" />
+
+<br>
+
+<img width="1893" height="873" alt="image" src="https://github.com/user-attachments/assets/d3a78801-f4a5-40b2-aab1-93d2e9029349" />
