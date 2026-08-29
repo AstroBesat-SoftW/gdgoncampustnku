@@ -1,4 +1,6 @@
 <?php
+// img içinde görseller olacak bir de
+
 if (isset($_GET['action'])) {
     header("Content-Type: application/json; charset=UTF-8");
     $file = "sonuclar.json";
