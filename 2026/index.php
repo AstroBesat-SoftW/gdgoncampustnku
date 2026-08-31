@@ -2,7 +2,7 @@
 // img içinde görseller olacak bir de
 // bu NAMIK KEMAL ÜNİVERSİTESİ google kulubü için yapıldı!
 // herkes istediği gibi kullanabilir
-
+// amaç kullanıclara test sunmak stant günü
 if (isset($_GET['action'])) {
     header("Content-Type: application/json; charset=UTF-8");
     $file = "sonuclar.json";
