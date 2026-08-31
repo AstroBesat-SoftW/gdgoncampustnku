@@ -5,6 +5,8 @@
 // amaç kullanıclara test sunmak stant günü
 // ve sunduğu testi kazananlara ödül vermek
 
+// img/ kupon.png ve logo.png
+
 if (isset($_GET['action'])) {
     header("Content-Type: application/json; charset=UTF-8");
     $file = "sonuclar.json";
