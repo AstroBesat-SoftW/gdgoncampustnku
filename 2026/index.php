@@ -3,6 +3,8 @@
 // bu NAMIK KEMAL ÜNİVERSİTESİ google kulubü için yapıldı!
 // herkes istediği gibi kullanabilir
 // amaç kullanıclara test sunmak stant günü
+// ve sunduğu testi kazananlara ödül vermek
+
 if (isset($_GET['action'])) {
     header("Content-Type: application/json; charset=UTF-8");
     $file = "sonuclar.json";
