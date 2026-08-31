@@ -1,6 +1,6 @@
 <?php
 // img içinde görseller olacak bir de
-
+// bu NAMIK KEMAL ÜNİVERSİTESİ google kulubü için yapıldı!
 if (isset($_GET['action'])) {
     header("Content-Type: application/json; charset=UTF-8");
     $file = "sonuclar.json";
