@@ -1,6 +1,6 @@
 # gdgoncampustnku
 ORJİNAL SİTE: https://nkugoogle.info
-
+Yakında güncellenek. güncel siteyi ekleyeceğim
 
 https://astrobesat-softw.github.io/gdgoncampustnku/
 <br>
