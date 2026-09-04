@@ -1,4 +1,4 @@
-# gdgoncampustnku
+# GDG Kulüp Sitesi - Google
 ORJİNAL SİTE: https://nkugoogle.info
 Yakında güncellenek. güncel siteyi ekleyeceğim
 
