@@ -2,6 +2,8 @@
 ORJİNAL SİTE: https://nkugoogle.info
 Yakında güncellenek. güncel siteyi ekleyeceğim
 
+ek bilgi: 10.00 sayaç yapıldı ve 2026 kısmında test eklendi veri kaydetmeli
+
 https://astrobesat-softw.github.io/gdgoncampustnku/
 <br>
 
